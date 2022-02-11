@@ -3,7 +3,10 @@
   Главная
 {% endblock %}
 {% block content %}
-  {% if user.is_authenticated %}
-    <p>На данный момент у Вас сохранено {{ notes }} заметок</p>
-  {% endif %}
+  <div>
+    <h1 class="text-2xl text-center font-bold mb-5">Django Notes</h1>
+    {% if user.is_authenticated %}
+      <h2 class="text-center">На данный момент у Вас сохранено {{ notes }} заметок</h2>
+    {% endif %}
+  </div>
 {% endblock %}
