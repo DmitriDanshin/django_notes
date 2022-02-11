@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block title %}
+  Главная
+{% endblock %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <p>На данный момент у Вас сохранено {{ notes }} заметок</p>
+  {% endif %}
+{% endblock %}

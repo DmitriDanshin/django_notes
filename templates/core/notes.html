@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% block title %}
+  Список задач
+{% endblock %}
+{% block content %}
+  <div>
+    <div class="px-10 grid gap-10 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2">
+      {% for note in notes %}
+        <div
+            class="w-full h-64 flex flex-col justify-between dark:bg-gray-800 bg-white dark:border-gray-700 rounded-lg border border-gray-400 mb-6 py-5 px-4">
+          <div>
+            <p class="text-gray-800 dark:text-gray-100 text-sm">{{ note.text }}</p>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-gray-800 dark:text-gray-100">
+              <p class="text-sm mr-3">{{ note.date_created }}</p>
+              <a href="{% url "delete-note" note.id %}"
+                 class="w-8 h-8 rounded-full bg-gray-800 dark:bg-gray-100 dark:text-gray-800 text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-black"
+                 aria-label="delete note" role="button">
+                <?xml version="1.0"?>
+                <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width=20px" height="20px">
+                  <path
+                      d="M 14.984375 2.4863281 A 1.0001 1.0001 0 0 0 14 3.5 L 14 4 L 8.5 4 A 1.0001 1.0001 0 0 0 7.4863281 5 L 6 5 A 1.0001 1.0001 0 1 0 6 7 L 24 7 A 1.0001 1.0001 0 1 0 24 5 L 22.513672 5 A 1.0001 1.0001 0 0 0 21.5 4 L 16 4 L 16 3.5 A 1.0001 1.0001 0 0 0 14.984375 2.4863281 z M 6 9 L 7.7929688 24.234375 C 7.9109687 25.241375 8.7633438 26 9.7773438 26 L 20.222656 26 C 21.236656 26 22.088031 25.241375 22.207031 24.234375 L 24 9 L 6 9 z"></path>
+                </svg>
+              </a>
+              <a href="{% url "edit-note" note.id %}"
+                 class="w-8 mx-2 h-8 rounded-full bg-gray-800 dark:bg-gray-100 dark:text-gray-800 text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-black"
+                 aria-label="edit note" role="button">
+                <?xml version="1.0"?>
+                <?xml version="1.0"?>
+                <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+                  <path
+                      d="M 19.171875 2 C 18.448125 2 17.724375 2.275625 17.171875 2.828125 L 16 4 L 20 8 L 21.171875 6.828125 C 22.275875 5.724125 22.275875 3.933125 21.171875 2.828125 C 20.619375 2.275625 19.895625 2 19.171875 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+{% endblock %}
