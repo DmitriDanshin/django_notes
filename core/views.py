@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
-
 from core.forms import SignUpForm, NoteForm
 from core.models import Note
 
@@ -22,31 +21,35 @@ class SignUpView(generic.CreateView):
 
 
 def index(request):
+    if request.user.is_authenticated:
+        notes_amount = Note.objects.filter(user=request.user).count()
+    else:
+        notes_amount = 0
     context = {
-        "notes": Note.objects.count()
+        "notes": notes_amount
     }
     return render(request, "core/index.html", context=context)
 
 
+@login_required
 def delete_note(request, note_id: int):
-    if request.user.is_authenticated:
-        note = Note.objects.get(pk=note_id)
-        if note:
-            note.delete()
-    return HttpResponseRedirect('/notes')
+    note = get_object_or_404(Note, pk=note_id)
+    if note.user != request.user:
+        return redirect('notes')
+    note.delete()
+    return redirect('notes')
 
 
+@login_required
 def notes(request):
-    if request.user.is_authenticated:
-        user_notes = Note.objects.filter(user__id=request.user.id)
-    else:
-        user_notes = []
+    user_notes = Note.objects.filter(user__id=request.user.id) or []
     context = {
         "notes": user_notes
     }
     return render(request, "core/notes.html", context=context)
 
 
+@login_required
 def create_note(request):
     if request.method == 'POST':
         form = NoteForm(request.POST)
@@ -63,8 +66,11 @@ def create_note(request):
     return render(request, 'core/create-note.html', context=context)
 
 
+@login_required
 def edit_note(request, note_id: int):
-    note = Note.objects.get(pk=note_id)
+    note = get_object_or_404(Note, pk=note_id)
+    if note.user != request.user:
+        return redirect('notes')
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
